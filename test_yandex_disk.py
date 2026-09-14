@@ -26,6 +26,18 @@ def test_create_folder():
 
     assert response.status_code == 201
 
+    check_response = requests.get(
+        BASE_URL,
+        headers=headers,
+        params={"path": "/"}
+    )
+
+    assert check_response.status_code == 200
+
+    assert folder_name in [
+        item["name"] for item in check_response.json()["_embedded"]["items"]
+    ]
+
 
 def test_create_folder_invalid_token():
     headers = {
